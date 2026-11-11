@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#0b0b0f" />
+  <title>MediaDeck · YouTube, TikTok y Pinterest</title>
+  <meta name="description" content="Descarga videos de YouTube, TikTok y guarda imágenes de Pinterest desde un solo lugar." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+<body>
+  <div class="aurora" aria-hidden="true">
+    <span class="blob blob-a"></span>
+    <span class="blob blob-b"></span>
+    <span class="grain"></span>
+  </div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5z"/>
+          <path d="M10 8.5v7l5.5-3.5z" fill="currentColor" stroke="none"/>
+        </svg>
+      </span>
+      <div class="brand-text">
+        <h1>MediaDeck</h1>
+        <p>YouTube · TikTok · Pinterest</p>
+      </div>
+    </div>
+
+    <div class="status" id="status" data-state="idle">
+      <span class="dot" aria-hidden="true"></span>
+      <span id="status-text">comprobando servidor…</span>
+    </div>
+  </header>
+
+  <main>
+    <nav class="switcher" aria-label="Elegir plataforma">
+      <button class="seg is-active" data-platform="youtube">
+        <span class="seg-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 7.2a2.5 2.5 0 0 0-1.8-1.8C18.2 5 12 5 12 5s-6.2 0-7.8.4A2.5 2.5 0 0 0 2.4 7.2 26 26 0 0 0 2 12a26 26 0 0 0 .4 4.8 2.5 2.5 0 0 0 1.8 1.8C5.8 19 12 19 12 19s6.2 0 7.8-.4a2.5 2.5 0 0 0 1.8-1.8A26 26 0 0 0 22 12a26 26 0 0 0-.4-4.8zM10 15V9l5.2 3z"/></svg>
+        </span>
+        YouTube
+      </button>
+      <button class="seg" data-platform="tiktok">
+        <span class="seg-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16.5 3h-2.7v11.2a2.6 2.6 0 1 1-2.6-2.6c.3 0 .6 0 .9.1V8.9a5.3 5.3 0 1 0 4.4 5.2V9.2a6.4 6.4 0 0 0 3.5 1V7.5a3.6 3.6 0 0 1-3.5-3.6V3z"/></svg>
+        </span>
+        TikTok
+      </button>
+      <button class="seg" data-platform="pinterest">
+        <span class="seg-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a10 10 0 0 0-3.6 19.3c-.1-.8-.2-2 0-2.9l1.2-5s-.3-.6-.3-1.5c0-1.4.8-2.4 1.8-2.4.9 0 1.3.6 1.3 1.4 0 .9-.6 2.2-.9 3.4-.2 1 .5 1.8 1.5 1.8 1.8 0 3.2-1.9 3.2-4.7 0-2.4-1.7-4.1-4.2-4.1a4.3 4.3 0 0 0-4.5 4.3c0 .9.3 1.5.8 2 .1.2.2.3.1.5l-.3 1c0 .2-.2.2-.4.2-1.2-.5-1.9-2-1.9-3.3 0-2.7 2-5.1 5.7-5.1 3 0 5.3 2.1 5.3 5 0 3-1.9 5.4-4.5 5.4-.9 0-1.7-.5-2-1l-.5 2c-.2.7-.7 1.7-1 2.2A10 10 0 1 0 12 2z"/></svg>
+        </span>
+        Pinterest
+      </button>
+    </nav>
+
+    <!-- ===================== YOUTUBE ===================== -->
+    <section class="panel is-active" id="panel-youtube">
+      <div class="mode-toggle" role="tablist">
+        <button class="mode is-active" data-mode="url" role="tab">Pegar enlace</button>
+        <button class="mode" data-mode="search" role="tab">Buscar</button>
+      </div>
+
+      <div class="mode-panel is-active" id="yt-mode-url">
+        <form class="searchbar" id="yt-url-form" autocomplete="off">
+          <span class="searchbar-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>
+          </span>
+          <input id="yt-url" type="text" placeholder="https://youtube.com/watch?v=…" required />
+          <button class="btn btn-primary" type="submit">Analizar</button>
+        </form>
+      </div>
+
+      <div class="mode-panel" id="yt-mode-search">
+        <form class="searchbar" id="yt-search-form" autocomplete="off">
+          <span class="searchbar-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          </span>
+          <input id="yt-q" type="text" placeholder="Busca un video, canción o canal…" required />
+          <button class="btn btn-primary" type="submit">Buscar</button>
+        </form>
+        <p class="source-note" id="yt-source"></p>
+        <div class="grid" id="yt-results"></div>
+      </div>
+
+      <div class="slot" id="yt-card"></div>
+
+      <div class="progress" id="yt-progress" hidden>
+        <div class="bar"><span></span></div>
+        <p class="progress-label">Preparando…</p>
+      </div>
+    </section>
+
+    <!-- ===================== TIKTOK ===================== -->
+    <section class="panel" id="panel-tiktok">
+      <form class="searchbar" id="tt-form" autocomplete="off">
+        <span class="searchbar-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1"/><path d="M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1"/></svg>
+        </span>
+        <input id="tt-url" type="text" placeholder="https://www.tiktok.com/@usuario/video/…" required />
+        <button class="btn btn-primary" type="submit">Analizar</button>
+      </form>
+      <p class="hint">Descarga sin marca de agua, con video y audio por separado.</p>
+      <div class="slot" id="tt-card"></div>
+    </section>
+
+    <!-- ===================== PINTEREST ===================== -->
+    <section class="panel" id="panel-pinterest">
+      <form class="searchbar" id="pin-form" autocomplete="off">
+        <span class="searchbar-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        </span>
+        <input id="pin-q" type="text" placeholder="Busca imágenes: gatos, paisajes, tattoos…" required />
+        <button class="btn btn-primary" type="submit">Buscar</button>
+      </form>
+      <p class="hint">Haz clic en una imagen para descargarla en su tamaño original.</p>
+      <div class="masonry" id="pin-results"></div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>YouTube local · TikTok y Pinterest vía <strong>OrbitX Space</strong> · <span id="year"></span></p>
+  </footer>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "name": "mediadeck",
+  "version": "2.1",
+  "author": "Neveloopp",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "test": "node e2e-yt.js",
+    "test:browser": "node e2e-browser.js"
+  },
+  "dependencies": {
+    "axios": "^1.21.1",
+    "dotenv": "^18.0.10",
+    "express": "^4.21.1",
+    "node-fetch": "2.x",
+    "yt-search": "^2.10.3"
+  },
+  "devDependencies": {
+    "puppeteer-core": "^24.3.1"
+  }
+}
