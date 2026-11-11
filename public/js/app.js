@@ -363,11 +363,18 @@
       return;
     }
 
+    // Acepta tanto URLs planas (backend normalizado) como media: { video, audio, cover }.
+    const pick = (v) =>
+      !v ? '' : typeof v === 'string' ? v : Array.isArray(v) ? pick(v[0]) : v.url || v.play || v.download_url || '';
+    const nested = result.media && typeof result.media === 'object' ? result.media : {};
+
     const title = result.title || 'Video de TikTok';
-    const author = typeof result.author === 'string' ? result.author : result.author?.name || '';
-    const cover = result.cover || result.thumbnail || '';
-    const hasVideo = !!result.media;
-    const hasAudio = !!result.audio;
+    const author = typeof result.author === 'string' ? result.author : result.author?.name || result.author?.username || '';
+    const cover = pick(result.cover) || pick(nested.cover) || pick(result.thumbnail);
+    const videoUrl = pick(result.media) || pick(nested.video) || pick(nested.nowm);
+    const audioUrl = pick(result.audio) || pick(nested.audio) || pick(nested.music);
+    const hasVideo = !!videoUrl;
+    const hasAudio = !!audioUrl;
     const base = safeName(title);
 
     target.innerHTML = `
@@ -401,7 +408,7 @@
       $('#tt-dl-video').addEventListener('click', (e) => {
         const btn = e.currentTarget;
         setBusy(btn, '⏳ Iniciando…');
-        saveLink(proxyUrl(result.media, `${base}.mp4`));
+        saveLink(proxyUrl(videoUrl, `${base}.mp4`));
         resetBtn(btn, 'is-success');
         toast('Descarga de video iniciada', 'success');
       });
@@ -411,7 +418,7 @@
       $('#tt-dl-audio').addEventListener('click', (e) => {
         const btn = e.currentTarget;
         setBusy(btn, '⏳ Iniciando…');
-        saveLink(proxyUrl(result.audio, `${base}.mp3`));
+        saveLink(proxyUrl(audioUrl, `${base}.mp3`));
         resetBtn(btn, 'is-success');
         toast('Descarga de audio iniciada', 'success');
       });
